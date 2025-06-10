@@ -1,1 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroMart - Premium Electronics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS for enhancements */
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            right: 0;
+            background-color: #3B82F6;
+            transition: width 0.3s ease;
+        }
+        
+        /* Animation for category icons */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .category-icon:hover {
+            animation: pulse 1s infinite;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+    <!-- Header/Navigation -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-2xl font-bold text-blue-600">Electro<span class="text-gray-800">Mart</span></a>
+                    <nav class="hidden md:flex space-x-8">
+                        <a href="#" class="nav-link relative text-gray-700 hover:text-blue-600 py-2">Home</a>
+                        <a href="#products" class="nav-link relative text-gray-700 hover:text-blue-600 py-2">Products</a>
+                        <a href="#categories" class="nav-link relative text-gray-700 hover:text-blue-600 py-2">Categories</a>
+                        <a href="#contact" class="nav-link relative text-gray-700 hover:text-blue-600 py-2">Contact</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-gray-600 hover:text-blue-600">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                    <button class="p-2 text-gray-600 hover:text-blue-600 relative">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                        <span class="cart-count absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+                    <button class="p-2 text-gray-600 hover:text-blue-600">
+                        <i class="fas fa-user text-lg"></i>
+                    </button>
+                    <button id="mobile-menu-button" class="md:hidden p-2 text-gray-600 hover:text-blue-600">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden py-2">
+                <a href="#" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">Home</a>
+                <a href="#products" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">Products</a>
+                <a href="#categories" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">Categories</a>
+                <a href="#contact" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">Contact</a>
+            </div>
+        </div>
+    </header>
 
+    <!-- Hero Section -->
+    <section class="hero-section text-white py-20 md:py-32">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Premium Electronics at Unbeatable Prices</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Discover the latest gadgets and tech essentials for your home and office.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                    Shop Now
+                </button>
+                <button class="bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                    View Deals
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Shop by Category</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                <!-- Category 1 -->
+                <div class="category-card group">
+                    <a href="#" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-300">
+                        <div class="category-icon mb-4 p-4 bg-blue-100 rounded-full text-blue-600 group-hover:bg-blue-200 transition duration-300">
+                            <i class="fas fa-laptop text-3xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition duration-300">Laptops</h3>
+                    </a>
+                </div>
+                
+                <!-- Category 2 -->
+                <div class="category-card group">
+                    <a href="#" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-300">
+                        <div class="category-icon mb-4 p-4 bg-blue-100 rounded-full text-blue-600 group-hover:bg-blue-200 transition duration-300">
+                            <i class="fas fa-mobile-alt text-3xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition duration-300">Smartphones</h3>
+                    </a>
+                </div>
+                
+                <!-- Category 3 -->
+                <div class="category-card group">
+                    <a href="#" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-300">
+                        <div class="category-icon mb-4 p-4 bg-blue-100 rounded-full text-blue-600 group-hover:bg-blue-200 transition duration-300">
+                            <i class="fas fa-headphones text-3xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition duration-300">Audio</h3>
+                    </a>
+                </div>
+                
+                <!-- Category 4 -->
+                <div class="category-card group">
+                    <a href="#" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-300">
+                        <div class="category-icon mb-4 p-4 bg-blue-100 rounded-full text-blue-600 group-hover:bg-blue-200 transition duration-300">
+                            <i class="fas fa-gamepad text-3xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition duration-300">Gaming</h3>
+                    </a>
+                </div>
+                
+                <!-- Category 5 -->
+                <div class="category-card group">
+                    <a href="#" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-300">
+                        <div class="category-icon mb-4 p-4 bg-blue-100 rounded-full text-blue-600 group-hover:bg-blue-200 transition duration-300">
+                            <i class="fas fa-tablet-alt text-3xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition duration-300">Tablets</h3>
+                    </a>
+                </div>
+                
+                <!-- Category 6 -->
+                <div class="category-card group">
+                    <a href="#" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-300">
+                        <div class="category-icon mb-4 p-4 bg-blue-100 rounded-full text-blue-600 group-hover:bg-blue-200 transition duration-300">
+                            <i class="fas fa-tv text-3xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition duration-300">TVs</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section id="products" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800">Featured Products</h2>
+                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">View All <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                             alt="MacBook Pro" class="w-full h-64 object-contain p-4">
+                        <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            -15%
+                        </div>
+                        <button class="wishlist-btn absolute top-3 right-3 bg-white p-2 rounded-full text-gray-400 hover:text-red-500">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-gray-800">MacBook Pro M2</h3>
+                                <p class="text-gray-600 text-sm">13-inch, 8GB RAM, 256GB SSD</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-blue-600">$1,299.00</p>
+                                <p class="text-xs text-gray-400 line-through">$1,499.00</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm ml-2">(42 reviews)</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300 transform hover:scale-105">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1610792516307-ea5acd9c7347?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                             alt="iPhone 14" class="w-full h-64 object-contain p-4">
+                        <button class="wishlist-btn absolute top-3 right-3 bg-white p-2 rounded-full text-gray-400 hover:text-red-500">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-gray-800">iPhone 14 Pro</h3>
+                                <p class="text-gray-600 text-sm">128GB, Space Black</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-blue-600">$999.00</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm ml-2">(36 reviews)</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300 transform hover:scale-105">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1600008646149-d1d49b0f8173?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                             alt="Sony Headphones" class="w-full h-64 object-contain p-4">
+                        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            New
+                        </div>
+                        <button class="wishlist-btn absolute top-3 right-3 bg-white p-2 rounded-full text-gray-400 hover:text-red-500">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-gray-800">Sony WH-1000XM5</h3>
+                                <p class="text-gray-600 text-sm">Wireless Noise Canceling</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-blue-600">$399.99</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm ml-2">(128 reviews)</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300 transform hover:scale-105">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c811329109e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                             alt="Samsung Smart TV" class="w-full h-64 object-contain p-4">
+                        <div class="absolute top-3 left-3 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            Hot
+                        </div>
+                        <button class="wishlist-btn absolute top-3 right-3 bg-white p-2 rounded-full text-gray-400 hover:text-red-500">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-gray-800">Samsung QLED 4K TV</h3>
+                                <p class="text-gray-600 text-sm">65-inch, Smart TV, 2023 Model</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-blue-600">$1,199.00</p>
+                                <p class="text-xs text-gray-400 line-through">$1,499.00</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm ml-2">(74 reviews)</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300 transform hover:scale-105">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offer Banner -->
+    <section class="py-10 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Summer Sale - Up to 30% Off!</h2>
+            <p class="text-xl mb-6">Limited time offer on selected electronics. Don't miss out!</p>
+            <div class="flex justify-center space-x-4">
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur-sm">
+                    <span class="block text-3xl font-bold" id="countdown-days">00</span>
+                    <span class="text-sm">Days</span>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur-sm">
+                    <span class="block text-3xl font-bold" id="countdown-hours">00</span>
+                    <span class="text-sm">Hours</span>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur-sm">
+                    <span class="block text-3xl font-bold" id="countdown-minutes">00</span>
+                    <span class="text-sm">Minutes</span>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur-sm">
+                    <span class="block text-3xl font-bold" id="countdown-seconds">00</span>
+                    <span class="text-sm">Seconds</span>
+                </div>
+            </div>
+            <button class="mt-8 bg-white text-blue-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                Shop the Sale
+            </button>
+        </div>
+    </section>
+
+    <!-- Trending Products (Carousel) -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Trending Now</h2>
+            
+            <div class="relative">
+                <!-- Carousel container -->
+                <div class="carousel-container overflow-x-auto pb-6 scroll-smooth">
+                    <div class="flex space-x-6 w-max">
+                        <!-- Carousel Item 1 -->
+                        <div class="flex-shrink-0 w-72">
+                            <div class="product-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1569770218135-bea267ed7e84?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                         alt="Apple Watch" class="w-full h-64 object-contain p-4">
+                                    <button class="wishlist-btn absolute top-3 right-3 bg-white p-2 rounded-full text-gray-400 hover:text-red-500">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-bold text-gray-800">Apple Watch Series 8</h3>
+                                            <p class="text-gray-600 text-sm">GPS, 41mm Silver Aluminum</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-bold text-blue-600">$399.00</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 flex items-center">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(58 reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Carousel Item 2 -->
+                        <div class="flex-shrink-0 w-72">
+                            <div class="product-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1627376653964-20a0b7f75319?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                         alt="PlayStation 5" class="w-full h-64 object-contain p-4">
+                                    <button class="wishlist-btn absolute top-3 right-3 bg-white p-2 rounded-full text-gray-400 hover:text-red-500">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-bold text-gray-800">PlayStation 5</h3>
+                                            <p class="text-gray-600 text-sm">Digital Edition</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-bold text-blue-600">$449.99</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 flex items-center">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(92 reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Carousel Item 3 -->
+                        <div class="flex-shrink-0 w-72">
+                            <div class="product-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                         alt="DJI Drone" class="w-full h-64 object-contain p-4">
+                                    <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                        New
+                                    </div>
+                                    <button class="wishlist-btn absolute top-3 right-3 bg-white p-2 rounded-full text-gray-400 hover:text-red-500">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-bold text-gray-800">DJI Mavic 3 Pro</h3>
+                                            <p class="text-gray-600 text-sm">4K Camera Drone</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-bold text-blue-600">$2,199.00</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 flex items-center">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(24 reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Carousel Item 4 -->
+                        <div class="flex-shrink-0 w-72">
+                            <div class="product-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                         alt="iPad Pro" class="w-full h-64 object-contain p-4">
+                                    <button class="wishlist-btn absolute top-3 right-3 bg-white p-2 rounded-full text-gray-400 hover:text-red-500">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-bold text-gray-800">iPad Pro 12.9"</h3>
+                                            <p class="text-gray-600 text-sm">M2 Chip, 128GB, Space Gray</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-bold text-blue-600">$1,099.00</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 flex items-center">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-600 text-sm ml-2">(67 reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carousel Navigation -->
+                <button class="carousel-prev absolute left-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-lg text-blue-600 hover:bg-blue-100 -ml-4 hidden md:block">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-next absolute right-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-lg text-blue-600 hover:bg-blue-100 -mr-4 hidden md:block">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">What Our Customers Say</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="flex mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"I recently purchased the MacBook Pro from ElectroMart and couldn't be happier! The delivery was fast, packaging was secure, and the laptop works perfectly. Will definitely shop here again!"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Sarah Johnson</h4>
+                            <p class="text-gray-500 text-sm">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="flex mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"Excellent customer service! When I had an issue with my order, the support team resolved it quickly and professionally. The products are top quality and prices are competitive."</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Michael Chen</h4>
+                            <p class="text-gray-500 text-sm">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="flex mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"I've been a customer for years and ElectroMart never disappoints. The selection is always up-to-date with the latest tech and the shipping is incredibly fast. Highly recommend!"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Jessica Williams" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Jessica Williams</h4>
+                            <p class="text-gray-500 text-sm">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-blue-600 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Stay Updated with Our Latest Deals</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Subscribe to our newsletter and be the first to know about exclusive offers, new arrivals, and tech tips.</p>
+            <div class="max-w-md mx-auto flex flex-col sm:flex-row gap-2">
+                <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <button class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105">
+                    Subscribe
+                </button>
+            </div>
+            <p class="mt-4 text-sm">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Contact Us</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-6 text-gray-800">Get in Touch</h3>
+                    <p class="text-gray-600 mb-8">Have questions about our products or need support? Fill out the form and our team will get back to you as soon as possible.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-map-marker-alt text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Address</h4>
+                                <p class="text-gray-600">123 Tech Street, Silicon Valley, CA 94000</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-phone-alt text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Phone</h4>
+                                <p class="text-gray-600">+1 (800) 123-4567</p>
+                                <p class="text-gray-600">Mon-Fri: 9AM-6PM EST</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-envelope text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Email</h4>
+                                <p class="text-gray-600">support@electromart.com</p>
+                                <p class="text-gray-600">sales@electromart.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h4 class="font-bold text-gray-800 mb-4">Follow Us</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="bg-gray-100 hover:bg-blue-100 p-3 rounded-full text-gray-600 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="bg-gray-100 hover:bg-blue-100 p-3 rounded-full text-gray-600 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="bg-gray-100 hover:bg-blue-100 p-3 rounded-full text-gray-600 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="bg-gray-100 hover:bg-blue-100 p-3 rounded-full text-gray-600 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <form class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="John Doe">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="john@example.com">
+                        </div>
+                        <div class="mb-4">
+                            <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
+                            <select id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select a subject</option>
+                                <option value="order">Order Inquiry</option>
+                                <option value="product">Product Question</option>
+                                <option value="shipping">Shipping & Returns</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Your message..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-105">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">ElectroMart</h3>
+                    <p class="text-gray-400 mb-4">Your one-stop shop for premium electronics and gadgets at competitive prices.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
+                        <li><a href="#products" class="text-gray-400 hover:text-white transition duration-300">Products</a></li>
+                        <li><a href="#categories" class="text-gray-400 hover:text-white transition duration-300">Categories</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Customer Service</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">My Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Order Tracking</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Wishlist</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Shipping Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Returns & Exchanges</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Payment Methods</h4>
+                    <div class="flex flex-wrap gap-3 mb-4">
+                        <div class="bg-gray-800 p-3 rounded">
+                            <i class="fab fa-cc-visa text-2xl"></i>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded">
+                            <i class="fab fa-cc-mastercard text-2xl"></i>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded">
+                            <i class="fab fa-cc-amex text-2xl"></i>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded">
+                            <i class="fab fa-cc-paypal text-2xl"></i>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded">
+                            <i class="fab fa-apple-pay text-2xl"></i>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-lg mb-2">Download Our App</h4>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <a href="#" class="bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg flex items-center justify-center transition duration-300">
+                            <i class="fab fa-apple mr-2 text-xl"></i>
+                            <div class="text-left">
+                                <div class="text-xs">Download on the</div>
+                                <div class="text-lg font-semibold leading-none">App Store</div>
+                            </div>
+                        </a>
+                        <a href="#" class="bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg flex items-center justify-center transition duration-300">
+                            <i class="fab fa-google-play mr-2 text-xl"></i>
+                            <div class="text-left">
+                                <div class="text-xs">Get it on</div>
+                                <div class="text-lg font-semibold leading-none">Google Play</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 ElectroMart. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">Cookies Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Countdown Timer for Special Offer
+        function updateCountdown() {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+            
+            // Set the sale to end in 3 days from now
+            const saleEnd = new Date(now);
+            saleEnd.setDate(now.getDate() + 3);
+            saleEnd.setHours(23, 59, 59, 999);
+            
+            const timeLeft = saleEnd - now;
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown-days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        // Carousel Navigation
+        const carouselContainer = document.querySelector('.carousel-container');
+        const carouselPrev = document.querySelector('.carousel-prev');
+        const carouselNext = document.querySelector('.carousel-next');
+        
+        if (carouselNext && carouselPrev) {
+            carouselNext.addEventListener('click', () => {
+                carouselContainer.scrollBy({ left: 300, behavior: 'smooth' });
+            });
+            
+            carouselPrev.addEventListener('click', () => {
+                carouselContainer.scrollBy({ left: -300, behavior: 'smooth' });
+            });
+        }
+        
+        // Back to Top Button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Add to Cart Button Animation
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+        
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Animation effect
+                this.classList.add('animate-ping');
+                
+                // Update cart count
+                const cartCount = document.querySelector('.cart-count');
+                if (cartCount) {
+                    const currentCount = parseInt(cartCount.textContent);
+                    cartCount.textContent = currentCount + 1;
+                    
+                    // Animation for cart count
+                    cartCount.classList.add('animate-bounce');
+                    setTimeout(() => {
+                        cartCount.classList.remove('animate-bounce');
+                    }, 1000);
+                }
+                
+                setTimeout(() => {
+                    this.classList.remove('animate-ping');
+                    this.textContent = 'Added to Cart!';
+                    this.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    this.classList.add('bg-green-500', 'hover:bg-green-600');
+                    
+                    setTimeout(() => {
+                        this.textContent = 'Add to Cart';
+                        this.classList.remove('bg-green-500', 'hover:bg-green-600');
+                        this.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    }, 2000);
+                }, 500);
+            });
+        });
+        
+        // Wishlist Button Toggle
+        const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+        
+        wishlistButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const icon = this.querySelector('i');
+                
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas', 'text-red-500');
+                    
+                    // Animation
+                    this.classList.add('animate-pulse');
+                    setTimeout(() => {
+                        this.classList.remove('animate-pulse');
+                    }, 500);
+                } else {
+                    icon.classList.remove('fas', 'text-red-500');
+                    icon.classList.add('far');
+                }
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
