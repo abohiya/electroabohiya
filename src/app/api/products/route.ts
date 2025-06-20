@@ -1,82 +1,71 @@
-
-import { writeFile, readFile } from 'fs/promises';
-import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 const filePath = path.join(process.cwd(), 'src/data/products.json');
 
-// ✅ GET: جلب جميع المنتجات
 export async function GET() {
   try {
-    const jsonData = await readFile(filePath, 'utf-8');
+    const jsonData = await fs.readFile(filePath, 'utf-8');
     const products = JSON.parse(jsonData);
     return NextResponse.json(products);
-  } catch (error) {
+  } catch {
     return NextResponse.json([], { status: 200 });
   }
 }
 
-// ✅ POST: إضافة منتج جديد
 export async function POST(req: NextRequest) {
-  const newProduct = await req.json();
-
   try {
-    const jsonData = await readFile(filePath, 'utf-8');
+    const newProduct = await req.json();
+
+    const jsonData = await fs.readFile(filePath, 'utf-8');
     const products = JSON.parse(jsonData);
 
     const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
     const productWithId = { id: newId, ...newProduct };
 
     products.push(productWithId);
-    await writeFile(filePath, JSON.stringify(products, null, 2));
+    await fs.writeFile(filePath, JSON.stringify(products, null, 2));
 
     return NextResponse.json({ success: true, product: productWithId });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'حدث خطأ أثناء الحفظ' }, { status: 500 });
   }
 }
 
-// ✅ PUT: تعديل منتج موجود
-export async function PUT(req: NextRequest) {
+export async function DELETE(req: NextRequest) {
   try {
-    const updatedProduct = await req.json();
-    const jsonData = await readFile(filePath, 'utf-8');
-    const products = JSON.parse(jsonData);
+    const { searchParams } = new URL(req.url);
+    const id = Number(searchParams.get('id'));
+    if (!id) return NextResponse.json({ error: 'معرف المنتج غير صالح' }, { status: 400 });
 
-    const index = products.findIndex((p: any) => p.id === updatedProduct.id);
-    if (index === -1) {
-      return NextResponse.json({ error: 'لم يتم العثور على المنتج' }, { status: 404 });
-    }
+    const jsonData = await fs.readFile(filePath, 'utf-8');
+    let products = JSON.parse(jsonData);
 
-    products[index] = updatedProduct;
-    await writeFile(filePath, JSON.stringify(products, null, 2));
+    products = products.filter((p: { id: number }) => p.id !== id);
+    await fs.writeFile(filePath, JSON.stringify(products, null, 2));
 
-    return NextResponse.json({ success: true, product: updatedProduct });
-  } catch (error) {
-    console.error('خطأ أثناء التحديث:', error);
-    return NextResponse.json({ error: 'حدث خطأ أثناء التحديث' }, { status: 500 });
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: 'حدث خطأ أثناء الحذف' }, { status: 500 });
   }
 }
 
-// ✅ DELETE: حذف منتج
-export async function DELETE(req: NextRequest) {
+export async function PUT(req: NextRequest) {
   try {
-    const url = new URL(req.url);
-    const id = url.searchParams.get('id');
+    const updatedProduct = await req.json();
 
-    if (!id) {
-      return NextResponse.json({ error: 'لم يتم تحديد معرف المنتج' }, { status: 400 });
-    }
+    const jsonData = await fs.readFile(filePath, 'utf-8');
+    let products = JSON.parse(jsonData);
 
-    const jsonData = await readFile(filePath, 'utf-8');
-    const products = JSON.parse(jsonData);
-    const updatedProducts = products.filter((p: any) => p.id !== Number(id));
+    products = products.map((p: { id: number }) =>
+      p.id === updatedProduct.id ? updatedProduct : p
+    );
 
-    await writeFile(filePath, JSON.stringify(updatedProducts, null, 2));
+    await fs.writeFile(filePath, JSON.stringify(products, null, 2));
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('خطأ في الحذف:', error);
-    return NextResponse.json({ error: 'حدث خطأ أثناء الحذف' }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: 'حدث خطأ أثناء التحديث' }, { status: 500 });
   }
 }

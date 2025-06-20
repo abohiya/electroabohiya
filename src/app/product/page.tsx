@@ -1,5 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 interface Product {
@@ -7,78 +8,44 @@ interface Product {
   title: string;
   price: string;
   image: string;
-  category: string;
+  isNew?: boolean;
 }
 
-export default function ProductsAdminPage() {
+export default function ProductListPage() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     fetch('/api/products')
       .then((res) => res.json())
-      .then((data) => setProducts(data));
+      .then(setProducts)
+      .catch(() => alert('فشل تحميل المنتجات'));
   }, []);
 
-  const handleDelete = async (id: number) => {
-    if (confirm('هل أنت متأكد أنك تريد حذف هذا المنتج؟')) {
-      await fetch(`/api/products/${id}`, { method: 'DELETE' });
-      setProducts(products.filter((p) => p.id !== id));
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-100 p-6" dir="rtl">
-      <div className="bg-white p-6 rounded-lg shadow-md max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-blue-700">إدارة المنتجات</h1>
-          <Link href="/admin/products/add">
-            <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
-              + إضافة منتج
-            </button>
+    <main className="min-h-screen p-6 bg-gray-100 max-w-6xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6">جميع المنتجات</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <Link
+            key={product.id}
+            href={`/product/${product.id}`}
+            className="bg-white p-4 rounded shadow hover:shadow-lg transition"
+          >
+            <img
+              src={product.image}
+              alt={product.title}
+              className="w-full h-48 object-cover rounded mb-2"
+            />
+            <h2 className="font-semibold">{product.title}</h2>
+            <p className="text-green-600 font-semibold">{product.price}</p>
+            {product.isNew && (
+              <span className="inline-block mt-1 px-2 py-1 bg-red-500 text-white text-xs rounded">
+                جديد
+              </span>
+            )}
           </Link>
-        </div>
-
-        <table className="w-full table-auto border-collapse">
-          <thead>
-            <tr className="bg-gray-200 text-right">
-              <th className="p-2 border">الصورة</th>
-              <th className="p-2 border">العنوان</th>
-              <th className="p-2 border">السعر</th>
-              <th className="p-2 border">القسم</th>
-              <th className="p-2 border">التحكم</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.id} className="border-t">
-                <td className="p-2 border">
-                  <img src={product.image} alt={product.title} className="h-12 w-12 object-cover" />
-                </td>
-                <td className="p-2 border">
-                  <Link href={`/product/${product.id}`} className="text-blue-600 hover:underline">
-                    {product.title}
-                  </Link>
-                </td>
-                <td className="p-2 border">{product.price}</td>
-                <td className="p-2 border">{product.category}</td>
-                <td className="p-2 border space-x-2">
-                  <Link href={`/admin/products/edit/${product.id}`}>
-                    <button className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition">
-                      تعديل
-                    </button>
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(product.id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition"
-                  >
-                    حذف
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        ))}
       </div>
-    </div>
+    </main>
   );
 }

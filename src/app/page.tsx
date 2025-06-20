@@ -1,7 +1,8 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar'; // تأكد من مسار Navbar
+import Navbar from '@/components/Navbar';
 
 interface Product {
   id: number;
@@ -20,7 +21,8 @@ export default function HomePage() {
   useEffect(() => {
     fetch('/api/products')
       .then((res) => res.json())
-      .then((data) => setProducts(data));
+      .then(setProducts)
+      .catch(() => alert('فشل تحميل المنتجات'));
   }, []);
 
   const categories = [
@@ -38,28 +40,25 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-
-      <main className="min-h-screen bg-white pb-12 pt-20">
-        {/* Hero Section */}
-        <div className="w-full h-80 bg-gradient-to-r from-blue-500 to-indigo-700 flex items-center justify-center text-white text-center p-6 mb-20">
+      <main className="min-h-screen bg-white pb-12">
+        <div className="w-full h-80 bg-gradient-to-r from-blue-500 to-indigo-700 flex items-center justify-center text-white text-center p-6 mb-20 mt-16">
           <div>
             <h1 className="text-4xl font-bold mb-2">مرحبًا بك في Electro Abohiya</h1>
             <p className="text-lg">أفضل الأجهزة الإلكترونية بأسعار تنافسية</p>
           </div>
         </div>
 
-        {/* فلترة */}
         <div id="products" className="max-w-6xl mx-auto px-4 mb-6">
           <div className="flex flex-wrap gap-3 justify-center">
             {categories.map((cat) => (
               <button
                 key={cat.key}
                 onClick={() => setFilteredCategory(cat.key)}
-                className={
+                className={`px-4 py-2 rounded-full font-medium border ${
                   filteredCategory === cat.key
-                    ? 'px-4 py-2 rounded-full font-medium border bg-blue-600 text-white transition'
-                    : 'px-4 py-2 rounded-full font-medium border bg-gray-100 text-gray-800 hover:bg-gray-200 transition'
-                }
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                } transition`}
               >
                 {cat.label}
               </button>
@@ -67,7 +66,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* المنتجات */}
         <div className="max-w-6xl mx-auto grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-4">
           {filteredProducts.map((product) => (
             <div
@@ -102,10 +100,9 @@ export default function HomePage() {
                   🛒 اطلب الآن
                 </Link>
                 <a
-                  href={
-                    'https://wa.me/212657788860?text=' +
-                    encodeURIComponent('أرغب في شراء المنتج: ' + product.title)
-                  }
+                  href={`https://wa.me/212657788860?text=${encodeURIComponent(
+                    'أرغب في شراء المنتج: ' + product.title
+                  )}`}
                   target="_blank"
                   className="text-center bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
                 >

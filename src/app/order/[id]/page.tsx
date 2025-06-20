@@ -1,112 +1,49 @@
-
 'use client';
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
 
-interface Product {
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+
+interface Order {
   id: number;
-  title: string;
-  price: string;
-  image: string;
-  description: string;
+  productId: number;
+  productTitle: string;
+  name: string;
+  phone: string;
+  notes: string;
+  date: string;
 }
 
-export default function OrderProductPage() {
+export default function OrderDetailsPage() {
   const params = useParams();
-  const router = useRouter();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [notes, setNotes] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const orderId = Number(params.id);
+  const [order, setOrder] = useState<Order | null>(null);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const res = await fetch('/api/products');
-      const data = await res.json();
-      const found = data.find((p: Product) => p.id === parseInt(params.id as string));
-      setProduct(found);
-    };
-
-    fetchProduct();
-  }, [params.id]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name || !phone) return alert('يرجى ملء الاسم ورقم الهاتف');
-    setLoading(true);
-
-    const orderData = {
-      productId: product?.id,
-      productTitle: product?.title,
-      name,
-      phone,
-      notes,
-    };
-
-    const res = await fetch('/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData),
-    });
-
-    setLoading(false);
-
-    if (res.ok) {
-      setSuccess(true);
-      setName('');
-      setPhone('');
-      setNotes('');
-    } else {
-      alert('حدث خطأ أثناء إرسال الطلب');
+    async function fetchOrder() {
+      try {
+        const res = await fetch('/api/orders');
+        const data: Order[] = await res.json();
+        const foundOrder = data.find((o) => o.id === orderId) || null;
+        setOrder(foundOrder);
+      } catch (error) {
+        console.error('Failed to fetch order', error);
+      }
     }
-  };
+    fetchOrder();
+  }, [orderId]);
 
-  if (!product) return <p className="text-center p-8">جاري تحميل المنتج...</p>;
+  if (!order) {
+    return <p className="p-6">لم يتم العثور على الطلب.</p>;
+  }
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white mt-6 shadow rounded">
-      <h1 className="text-2xl font-bold mb-4">🛒 طلب منتج: {product.title}</h1>
-      <img src={product.image} alt={product.title} className="w-full h-56 object-cover rounded mb-4" />
-      <p className="text-green-600 font-semibold mb-1">{product.price}</p>
-      <p className="text-gray-500 mb-4">{product.description}</p>
-
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="الاسم الكامل"
-          className="w-full border p-2 rounded"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="tel"
-          placeholder="رقم الهاتف"
-          className="w-full border p-2 rounded"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="ملاحظات إضافية (اختياري)"
-          className="w-full border p-2 rounded"
-          rows={3}
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        ></textarea>
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
-          disabled={loading}
-        >
-          {loading ? 'جاري الإرسال...' : '📤 إرسال الطلب'}
-        </button>
-
-        {success && <p className="text-green-600 mt-3">✅ تم إرسال الطلب بنجاح!</p>}
-      </form>
-    </div>
+    <main className="min-h-screen p-6 bg-gray-100 max-w-xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">تفاصيل الطلب #{order.id}</h1>
+      <p><strong>المنتج:</strong> {order.productTitle}</p>
+      <p><strong>الاسم:</strong> {order.name}</p>
+      <p><strong>الهاتف:</strong> {order.phone}</p>
+      <p><strong>ملاحظات:</strong> {order.notes}</p>
+      <p><strong>التاريخ:</strong> {new Date(order.date).toLocaleString('ar-MA')}</p>
+    </main>
   );
 }
