@@ -2,13 +2,11 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import products from '@/data/products.json';
 
 export default function OrderPage({ params }: { params: { id: string } }) {
-  const router = useRouter();
   const productId = parseInt(params.id);
   const product = products.find((p) => p.id === productId);
 
@@ -48,7 +46,6 @@ export default function OrderPage({ params }: { params: { id: string } }) {
       <main className="max-w-4xl mx-auto py-12 px-4">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">🛒 طلب المنتج</h1>
 
-        {/* معلومات المنتج */}
         <div className="flex flex-col md:flex-row gap-6 bg-white p-6 border rounded-lg mb-10">
           <div className="w-full md:w-1/3 h-60 relative">
             <Image
@@ -64,7 +61,6 @@ export default function OrderPage({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        {/* نموذج الطلب */}
         <div className="bg-white p-6 rounded-lg border space-y-4">
           <input
             type="text"
@@ -84,25 +80,4 @@ export default function OrderPage({ params }: { params: { id: string } }) {
             type="text"
             placeholder="العنوان الكامل"
             value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="w-full border p-2 rounded"
-          />
-          <textarea
-            placeholder="ملاحظات إضافية (اختياري)"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className="w-full border p-2 rounded"
-          />
-
-          <button
-            onClick={handleOrder}
-            className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 transition"
-          >
-            إرسال الطلب عبر واتساب
-          </button>
-        </div>
-      </main>
-      <Footer />
-    </>
-  );
-}
+            onChange={(e) => setAddress(e.ta

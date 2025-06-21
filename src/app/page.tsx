@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 import HeroSlider from '@/components/HeroSlider';
 import Footer from '@/components/Footer';
-import ProductCard from '@/components/ProductCard';
 
 interface Product {
   id: number;
@@ -53,7 +52,7 @@ export default function HomePage() {
         {/* 🔁 سلايدر الهيرو */}
         <HeroSlider />
 
-        {/* 🟢 الفئات الدائرية بالصور */}
+        {/* 🟢 الفئات الدائرية */}
         <div className="max-w-6xl mx-auto px-4 mt-12">
           <div className="flex flex-wrap justify-center gap-6">
             {categories.map((cat) => (
@@ -73,24 +72,83 @@ export default function HomePage() {
                     className="object-cover w-full h-full"
                   />
                 </div>
+                <span className="text-sm font-medium">{cat.label}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* 🛍️ المنتجات */}
+        {/* 🛒 المنتجات */}
         <div className="max-w-6xl mx-auto grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-4 mt-10">
           {filteredProducts.map((product) => (
-            <ProductCard
+            <div
               key={product.id}
-              id={product.id}
-              title={product.title}
-              price={product.price}
-              image={product.image}
-              isNew={product.isNew}
-              isOnSale={product.isOnSale}
-              isAvailable={product.isAvailable}
-            />
+              className="relative bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden border border-gray-200"
+            >
+              {/* الوسوم */}
+              {(product.isNew || product.isOnSale || !product.isAvailable) && (
+                <div className="absolute top-2 right-2 flex flex-wrap gap-1 z-10">
+                  {product.isNew && (
+                    <span className="bg-green-500 text-white text-xs px-2 py-0.5 rounded">
+                      جديد
+                    </span>
+                  )}
+                  {product.isOnSale && (
+                    <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded">
+                      تخفيض
+                    </span>
+                  )}
+                  {!product.isAvailable && (
+                    <span className="bg-gray-500 text-white text-xs px-2 py-0.5 rounded">
+                      غير متوفر
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* صورة المنتج */}
+              <div className="w-full h-48 relative">
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  fill
+                  className="object-contain p-4"
+                />
+              </div>
+
+              {/* محتوى البطاقة */}
+              <div className="p-4 text-center">
+                <h3 className="text-sm text-gray-600">{product.title}</h3>
+                <p className="text-lg font-bold text-green-600 mt-1">{product.price} MAD</p>
+                <p className="text-green-600 text-sm mt-1">متوفر في المخزون</p>
+                <p className="text-sm text-gray-600 mb-3 truncate">{product.description}</p>
+
+                {/* الأزرار */}
+                <div className="flex flex-col gap-2 mt-2">
+                  <Link
+                    href={`/product/${product.id}`}
+                    className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                  >
+                    🔍 عرض التفاصيل
+                  </Link>
+                  <Link
+                    href={`/order/${product.id}`}
+                    className="bg-yellow-400 text-black py-2 rounded hover:bg-yellow-500 transition"
+                  >
+                    🛒 اطلب الآن
+                  </Link>
+                  <a
+                    href={`https://wa.me/212657788860?text=${encodeURIComponent(
+                      'أرغب في شراء المنتج: ' + product.title
+                    )}`}
+                    target="_blank"
+                    className="bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+                  >
+                    واتساب
+                  </a>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </main>
