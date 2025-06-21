@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 import HeroSlider from '@/components/HeroSlider';
 import Footer from '@/components/Footer';
+import ProductCard from '@/components/ProductCard';
 
 interface Product {
   id: number;
@@ -15,6 +16,8 @@ interface Product {
   category: string;
   description: string;
   isNew?: boolean;
+  isOnSale?: boolean;
+  isAvailable?: boolean;
 }
 
 export default function HomePage() {
@@ -45,6 +48,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
+
       <main className="min-h-screen bg-white pb-12 pt-24">
         {/* 🔁 سلايدر الهيرو */}
         <HeroSlider />
@@ -74,56 +78,23 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 📦 المنتجات */}
+        {/* 🛍️ المنتجات */}
         <div className="max-w-6xl mx-auto grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-4 mt-10">
           {filteredProducts.map((product) => (
-            <div
+            <ProductCard
               key={product.id}
-              className="bg-white shadow rounded-xl p-4 hover:shadow-lg transition relative"
-            >
-              {product.isNew && (
-                <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
-                  جديد
-                </span>
-              )}
-              <Image
-                src={product.image}
-                alt={product.title}
-                width={400}
-                height={300}
-                className="w-full h-48 object-cover rounded-md mb-3"
-              />
-              <h2 className="text-lg font-bold text-gray-800 mb-1">{product.title}</h2>
-              <p className="text-green-600 font-semibold mb-1">{product.price}</p>
-              <p className="text-green-600 text-sm mt-1">متوفر في المخزون</p>
-              <p className="text-sm text-gray-600 mb-3 truncate">{product.description}</p>
-              <div className="flex flex-col gap-2">
-                <Link
-                  href={`/product/${product.id}`}
-                  className="text-center bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-                >
-                  🔍 عرض التفاصيل
-                </Link>
-                <Link
-                  href={`/order/${product.id}`}
-                  className="text-center bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition"
-                >
-                  🛒 اطلب الآن
-                </Link>
-                <a
-                  href={`https://wa.me/212657788860?text=${encodeURIComponent(
-                    'أرغب في شراء المنتج: ' + product.title
-                  )}`}
-                  target="_blank"
-                  className="text-center bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
-                >
-                  واتساب
-                </a>
-              </div>
-            </div>
+              id={product.id}
+              title={product.title}
+              price={product.price}
+              image={product.image}
+              isNew={product.isNew}
+              isOnSale={product.isOnSale}
+              isAvailable={product.isAvailable}
+            />
           ))}
         </div>
       </main>
+
       <Footer />
     </>
   );

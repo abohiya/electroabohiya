@@ -1,78 +1,108 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import products from '@/data/products.json';
 
-interface Product {
-  id: number;
-  title: string;
-  price: string;
-  image: string;
-  description: string;
-  category: string;
-  isNew?: boolean;
-}
+export default function OrderPage({ params }: { params: { id: string } }) {
+  const router = useRouter();
+  const productId = parseInt(params.id);
+  const product = products.find((p) => p.id === productId);
 
-export default function OrderPage() {
-  const { id } = useParams();
-  const [product, setProduct] = useState<Product | null>(null);
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [notes, setNotes] = useState('');
 
-  useEffect(() => {
-    fetch('/api/products')
-      .then((res) => res.json())
-      .then((data: Product[]) => {
-        const found = data.find((p) => p.id === Number(id));
-        setProduct(found || null);
-      });
-  }, [id]);
+  if (!product) return <div className="text-center py-20 text-red-600">المنتج غير موجود</div>;
 
-  if (!product) {
-    return (
-      <div className="text-center mt-24 text-red-600 font-bold">
-        لم يتم العثور على المنتج
-      </div>
-    );
-  }
+  const handleOrder = () => {
+    if (!fullName || !phone || !address) {
+      alert('يرجى ملء جميع الحقول المطلوبة');
+      return;
+    }
+
+    const message = `
+🛒 طلب منتج:
+المنتج: ${product.title}
+السعر: ${product.price} MAD
+
+👤 الاسم: ${fullName}
+📞 الهاتف: ${phone}
+📍 العنوان: ${address}
+📝 ملاحظات: ${notes || 'لا شيء'}
+
+تم الطلب من موقع Electro Abohiya.
+    `;
+
+    const whatsappLink = `https://wa.me/212657788860?text=${encodeURIComponent(message)}`;
+    window.open(whatsappLink, '_blank');
+  };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold mb-6 text-center">تأكيد الطلب</h1>
-      <div className="bg-white rounded-xl shadow-md p-6">
-        <div className="flex flex-col md:flex-row items-center gap-6">
-          <Image
-            src={product.image}
-            alt={product.title}
-            width={300}
-            height={200}
-            className="rounded-md object-cover"
-          />
+    <>
+      <Header />
+      <main className="max-w-4xl mx-auto py-12 px-4">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">🛒 طلب المنتج</h1>
+
+        {/* معلومات المنتج */}
+        <div className="flex flex-col md:flex-row gap-6 bg-white p-6 border rounded-lg mb-10">
+          <div className="w-full md:w-1/3 h-60 relative">
+            <Image
+              src={product.image}
+              alt={product.title}
+              fill
+              className="object-contain rounded"
+            />
+          </div>
           <div className="flex-1">
-            <h2 className="text-xl font-bold mb-2">{product.title}</h2>
-            <p className="text-green-600 font-semibold mb-2">{product.price}</p>
-            <p className="text-gray-600 text-sm mb-4">{product.description}</p>
-            <a
-              href={`https://wa.me/212657788860?text=${encodeURIComponent(
-                `أرغب في طلب المنتج: ${product.title} بسعر ${product.price}`
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition"
-            >
-              إرسال الطلب عبر واتساب
-            </a>
+            <h2 className="text-xl font-semibold mb-2">{product.title}</h2>
+            <p className="text-green-600 text-lg font-bold">{product.price} MAD</p>
           </div>
         </div>
-      </div>
-      <div className="text-center mt-6">
-        <Link
-          href="/"
-          className="text-blue-600 hover:underline"
-        >
-          ⬅️ العودة للصفحة الرئيسية
-        </Link>
-      </div>
-    </div>
+
+        {/* نموذج الطلب */}
+        <div className="bg-white p-6 rounded-lg border space-y-4">
+          <input
+            type="text"
+            placeholder="الاسم الكامل"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            className="w-full border p-2 rounded"
+          />
+          <input
+            type="tel"
+            placeholder="رقم الهاتف"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="w-full border p-2 rounded"
+          />
+          <input
+            type="text"
+            placeholder="العنوان الكامل"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className="w-full border p-2 rounded"
+          />
+          <textarea
+            placeholder="ملاحظات إضافية (اختياري)"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="w-full border p-2 rounded"
+          />
+
+          <button
+            onClick={handleOrder}
+            className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 transition"
+          >
+            إرسال الطلب عبر واتساب
+          </button>
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 }
