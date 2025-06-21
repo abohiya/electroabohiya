@@ -15,7 +15,8 @@ export default function OrderPage({ params }: { params: { id: string } }) {
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
 
-  if (!product) return <div className="text-center py-20 text-red-600">المنتج غير موجود</div>;
+  if (!product)
+    return <div className="text-center py-20 text-red-600">المنتج غير موجود</div>;
 
   const handleOrder = () => {
     if (!fullName || !phone || !address) {
@@ -80,4 +81,24 @@ export default function OrderPage({ params }: { params: { id: string } }) {
             type="text"
             placeholder="العنوان الكامل"
             value={address}
-            onChange={(e) => setAddress(e.ta
+            onChange={(e) => setAddress(e.target.value)}
+            className="w-full border p-2 rounded"
+          />
+          <textarea
+            placeholder="ملاحظات إضافية (اختياري)"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="w-full border p-2 rounded"
+          />
+          <button
+            onClick={handleOrder}
+            className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+          >
+            إرسال الطلب عبر واتساب
+          </button>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}
