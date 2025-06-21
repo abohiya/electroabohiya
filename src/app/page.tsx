@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/Header';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // ✅ ستايل السلايدر
+import HeroSlider from '@/components/HeroSlider';
 
 interface Product {
   id: number;
@@ -45,28 +44,7 @@ export default function HomePage() {
       <Header />
       <main className="min-h-screen bg-white pb-12 pt-24">
         {/* 🔁 سلايدر الهيرو */}
-        <div className="w-full max-w-7xl mx-auto mb-16 overflow-hidden rounded-xl">
-          <Carousel
-            autoPlay
-            infiniteLoop
-            showThumbs={false}
-            showStatus={false}
-            interval={4000}
-            className="rounded-xl"
-          >
-            {['hero1.jpg', 'hero2.jpg', 'hero3.jpg'].map((file, index) => (
-              <div key={index} className="relative w-full h-[400px]">
-                <Image
-                  src={`/images/banners/${file}`}
-                  alt={`Hero Banner ${index + 1}`}
-                  fill
-                  className="object-cover rounded-xl"
-                  priority={index === 0}
-                />
-              </div>
-            ))}
-          </Carousel>
-        </div>
+        <HeroSlider />
 
         {/* 🔘 تصفية الفئات */}
         <div id="products" className="max-w-6xl mx-auto px-4 mb-6">
