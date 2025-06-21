@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import Image from 'next/image';
 
 interface Product {
   id: number;
@@ -77,11 +78,15 @@ export default function HomePage() {
                   جديد
                 </span>
               )}
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-full h-48 object-cover rounded-md mb-3"
-              />
+              <div className="w-full h-48 relative mb-3">
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  fill
+                  className="object-cover rounded-md"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+              </div>
               <h2 className="text-lg font-bold text-gray-800 mb-1">{product.title}</h2>
               <p className="text-green-600 font-semibold mb-1">{product.price}</p>
               <p className="text-green-600 text-sm mt-1">متوفر في المخزون</p>
