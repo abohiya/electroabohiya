@@ -1,34 +1,34 @@
 [
   {
     "id": 16,
-    "title": "pc hp ",
-    "price": "2500",
-    "category": "حواسيب",
+    "title": "PC HP",
+    "price": "2500 د.م",
+    "category": "laptop",
     "description": "PC SOLO",
-    "image": "/uploads/1750385785091_desktop-hp.jpg.jpg"
+    "image": "/uploads/1750385785091_desktop-hp.jpg"
   },
   {
     "id": 17,
-    "title": "pc hp ",
-    "price": "2500",
-    "category": "حواسيب",
+    "title": "PC HP",
+    "price": "2500 د.م",
+    "category": "laptop",
     "description": "PC SOLO",
-    "image": "/uploads/1750385792834_desktop-hp.jpg.jpg"
+    "image": "/uploads/1750385792834_desktop-hp.jpg"
   },
   {
     "id": 18,
-    "title": "لايل",
-    "price": "ؤرلالا",
-    "category": "حواسيب",
-    "description": "يبيلابلاءلايلالايل",
-    "image": "/uploads/1750386141305_desktop-hp.jpg.jpg"
+    "title": "لابتوب تجريبي",
+    "price": "999 د.م",
+    "category": "laptop",
+    "description": "وصف تجريبي للمنتج",
+    "image": "/uploads/1750386141305_desktop-hp.jpg"
   },
   {
     "id": 19,
-    "title": "SSSS",
-    "price": "777",
-    "category": "حواسيب",
-    "description": "DHHTRH",
-    "image": "/uploads/1750386334239_desktop-hp.jpg.jpg"
+    "title": "حاسوب مكتبي SSSS",
+    "price": "777 د.م",
+    "category": "laptop",
+    "description": "حاسوب مكتبي عملي",
+    "image": "/uploads/1750386334239_desktop-hp.jpg"
   }
 ]
