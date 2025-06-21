@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
 import Image from 'next/image';
+import Header from '@/components/Header';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // ✅ ستايل السلايدر
 
 interface Product {
   id: number;
@@ -40,15 +42,33 @@ export default function HomePage() {
 
   return (
     <>
-      <Navbar />
-      <main className="min-h-screen bg-white pb-12">
-        <div className="w-full h-80 bg-gradient-to-r from-blue-500 to-indigo-700 flex items-center justify-center text-white text-center p-6 mb-20 mt-16">
-          <div>
-            <h1 className="text-4xl font-bold mb-2">مرحبًا بك في Electro Abohiya</h1>
-            <p className="text-lg">أفضل الأجهزة الإلكترونية بأسعار تنافسية</p>
-          </div>
+      <Header />
+      <main className="min-h-screen bg-white pb-12 pt-24">
+        {/* 🔁 سلايدر الهيرو */}
+        <div className="w-full max-w-7xl mx-auto mb-16 overflow-hidden rounded-xl">
+          <Carousel
+            autoPlay
+            infiniteLoop
+            showThumbs={false}
+            showStatus={false}
+            interval={4000}
+            className="rounded-xl"
+          >
+            {['hero1.jpg', 'hero2.jpg', 'hero3.jpg'].map((file, index) => (
+              <div key={index} className="relative w-full h-[400px]">
+                <Image
+                  src={`/images/banners/${file}`}
+                  alt={`Hero Banner ${index + 1}`}
+                  fill
+                  className="object-cover rounded-xl"
+                  priority={index === 0}
+                />
+              </div>
+            ))}
+          </Carousel>
         </div>
 
+        {/* 🔘 تصفية الفئات */}
         <div id="products" className="max-w-6xl mx-auto px-4 mb-6">
           <div className="flex flex-wrap gap-3 justify-center">
             {categories.map((cat) => (
@@ -67,6 +87,7 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* 📦 المنتجات */}
         <div className="max-w-6xl mx-auto grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-4">
           {filteredProducts.map((product) => (
             <div
@@ -78,15 +99,13 @@ export default function HomePage() {
                   جديد
                 </span>
               )}
-              <div className="w-full h-48 relative mb-3">
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  fill
-                  className="object-cover rounded-md"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
+              <Image
+                src={product.image}
+                alt={product.title}
+                width={400}
+                height={300}
+                className="w-full h-48 object-cover rounded-md mb-3"
+              />
               <h2 className="text-lg font-bold text-gray-800 mb-1">{product.title}</h2>
               <p className="text-green-600 font-semibold mb-1">{product.price}</p>
               <p className="text-green-600 text-sm mt-1">متوفر في المخزون</p>

@@ -1,32 +1,42 @@
+// src/components/HeroSlider.tsx
 'use client';
 
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+
+const images = [
+  '/banners/hero1.png',
+  '/banners/hero2.png',
+  '/banners/hero3.png',
+];
 
 export default function HeroSlider() {
-  return (
-    <section className="w-full bg-[#0052CC] text-white py-16 px-4 md:px-24 flex flex-col-reverse md:flex-row items-center justify-between gap-12">
-      {/* النص */}
-      <div className="flex-1 text-center md:text-right">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-snug">
-          أقوى العروض
-        </h1>
-        <p className="text-lg mb-6">خصومات على أحدث المنتجات</p>
-        <button className="bg-white text-blue-600 font-semibold py-2 px-6 rounded hover:bg-gray-100 transition">
-          تسوق الآن
-        </button>
-      </div>
+  const [current, setCurrent] = useState(0);
 
-      {/* الصورة */}
-      <div className="flex-1 flex justify-center">
-        <Image
-          src="/images/slider/hero-slide.jpg"
-          alt="Laptop Hero"
-          width={500}
-          height={400}
-          className="object-contain rounded-xl shadow-lg"
-          priority
-        />
-      </div>
-    </section>
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full h-[300px] md:h-[450px] overflow-hidden relative rounded-xl shadow-md mt-4">
+      {images.map((src, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === current ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
+        >
+          <Image
+            src={src}
+            alt={`slider-${index}`}
+            fill
+            className="object-cover rounded-xl"
+          />
+        </div>
+      ))}
+    </div>
   );
 }
